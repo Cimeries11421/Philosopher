@@ -15,7 +15,7 @@
 static int	check_args(char **av);
 static int	not_only_digit(char *str);
 
-int	parse_input_and_store_in_struct(int ac, char **av, t_global *global)
+int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl)
 {
 	if (ac != 6)
 	{
@@ -27,11 +27,11 @@ int	parse_input_and_store_in_struct(int ac, char **av, t_global *global)
 		write(2, "Wrong Input\n", 13);
 		return (-1);
 	}
-	global->nbr_philo = ft_strtol(av[1]);
-	global->time_to_die = ft_strtol(av[2]);
-	global->time_to_eat = ft_strtol(av[3]);
-	global->time_to_sleep = ft_strtol(av[4]);
-	global->nbr_of_times_need_to_eat = ft_strtol(av[5]);
+	tbl->nbr_philo = ft_strtol(av[1]);
+	tbl->time_to_die = ft_strtol(av[2]);
+	tbl->time_to_eat = ft_strtol(av[3]);
+	tbl->time_to_sleep = ft_strtol(av[4]);
+	tbl->nbr_of_times_need_to_eat = ft_strtol(av[5]);
 	return (0);
 }
 

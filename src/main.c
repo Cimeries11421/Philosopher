@@ -14,13 +14,13 @@
 
 int	main(int ac, char **av)
 {
-	t_global global;
+	t_tbl tbl;
 
-	global = (t_global){0};
-	if (parse_input_and_store_in_struct(ac, av, &global) == -1)
+	tbl = (t_tbl){0};
+	if (parse_input_and_store_in_struct(ac, av, &tbl) == -1)
 		return (-1);
-	printf("nbr_philo = %ld\n", global.nbr_philo);
-	if (create_philosophers_and_launch_their_routine(&global) == -1)
+	printf("nbr_philo = %ld\n", tbl.nbr_philo);
+	if (create_philosophers_and_launch_their_routine(&tbl) == -1)
 		return (-1);
 	return (0);
 }
