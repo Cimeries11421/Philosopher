@@ -6,6 +6,7 @@ SRC = \
 	src/main.c \
 	src/parse_input_and_store_in_struct.c \
 	src/create_philosopher_and_launch_their_routine.c \
+	src/begin_routine.c 
 
 OBJ = $(SRC:.c=.o)
 

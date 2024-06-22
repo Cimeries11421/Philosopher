@@ -38,13 +38,17 @@ typedef struct	s_philo
 	pthread_t	t;
 	size_t		name;
 	bool		meal_taken;
-	int			fork_in_hands;
-	t_tbl	*tbl;
+	t_forks		*right_fork;
+	size_t		rf_index; // a enlever
+	size_t		lf_index; // a enlever
+	t_forks		*left_fork;
+	t_tbl		*tbl;
 	e_status	status;
 	
 }				t_philo;
 
 int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl);
 int	create_philosophers_and_launch_their_routine(t_tbl *tbl);
+void	*routine(void *arg);
 
 #endif
