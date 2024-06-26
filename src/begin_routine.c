@@ -91,10 +91,10 @@ static int	is_eating(t_philo *philo, int *start, struct timeval time)
 			philo->left_fork->is_available = false;
 			printf("philosopher %ld take left fork\n", philo->name);
 			printf("philosopher %ld is eating\n", philo->name);
-			usleep(philo->tbl->time_to_eat * 1000);
+	//		usleep(philo->tbl->time_to_eat * 1000);
 			printf(GREEN"AVT FT start = %d for philo %d\n"RESET, *start, philo->name);
-//			if (wait_and_check_if_philo_still_alive(philo, start, EATING, time) == false)
-//				return (-1);
+			if (wait_and_check_if_philo_still_alive(philo, start, EATING, time) == false)
+				return (-1);
 			philo->meal_taken = true;
 			if (gettimeofday(&time, NULL) == -1)
 				return (printf("HOUHOU\n"), -1);
@@ -114,9 +114,9 @@ static int	is_eating(t_philo *philo, int *start, struct timeval time)
 static int	is_sleeping(t_philo *philo, int *start, struct timeval time)
 {
 	printf("philosopher %ld is sleeping\n", philo->name);
-//	if (wait_and_check_if_philo_still_alive(philo, start, SLEEPING, time) == false)
-//		return (-1);
-	usleep(philo->tbl->time_to_sleep * 1000);
+	if (wait_and_check_if_philo_still_alive(philo, start, SLEEPING, time) == false)
+		return (-1);
+//	usleep(philo->tbl->time_to_sleep * 1000);
 	philo->meal_taken = false;
 	return (0);
 }
