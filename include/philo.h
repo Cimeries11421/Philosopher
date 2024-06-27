@@ -42,6 +42,7 @@ typedef struct	s_tbl
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nbr_of_times_need_to_eat;
+	bool			death;
 	t_forks			*forks;
 }				t_tbl;
 

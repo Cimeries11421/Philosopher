@@ -20,6 +20,7 @@ int	create_philosophers_and_launch_their_routine(t_tbl *tbl)
 	size_t	i;
 	t_philo	*tab_philo;
 
+	tbl->death = false;
 	tab_philo = create_table_of_philosophers_and_add_forks(tbl);
 	if (tab_philo == NULL)
 		return (-1);
