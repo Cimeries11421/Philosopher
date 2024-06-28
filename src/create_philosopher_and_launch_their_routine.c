@@ -45,6 +45,7 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 	if (tbl->forks == NULL)
 		return (NULL);
 	i = 0;
+	pthread_mutex_init(&tbl->death_mutex, NULL);
 	while (i < tbl->nbr_philo)
 	{	
 		pthread_mutex_init(&tbl->forks[i].mutex, NULL);

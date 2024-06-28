@@ -43,6 +43,7 @@ typedef struct	s_tbl
 	int				time_to_sleep;
 	int				nbr_of_times_need_to_eat;
 	bool			death;
+	pthread_mutex_t	death_mutex;
 	t_forks			*forks;
 }				t_tbl;
 
@@ -63,5 +64,9 @@ typedef struct	s_philo
 int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl);
 int	create_philosophers_and_launch_their_routine(t_tbl *tbl);
 void	*routine(void *arg);
+int	get_time(struct timeval time, int start);
+int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time);
+int	is_sleeping(t_philo *philo, int *start, int start_routine, struct timeval time);
+int wait_for_task(t_philo *philo, int *start, int task_time, struct timeval time);
 
 #endif
