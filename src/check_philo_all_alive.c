@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-bool	check_philo_all_alive(t_philo *philo, int *start, struct timeval time)
+bool	check_philo_all_alive(t_philo *philo, int *start, int start_routine, struct timeval time)
 {
 	int	total_time;
 
@@ -26,6 +26,10 @@ bool	check_philo_all_alive(t_philo *philo, int *start, struct timeval time)
 	if (total_time >= philo->tbl->time_to_die)
 	{
 		philo->tbl->death = true;
+		if (print_time_and_state(philo, start_routine, "died") == -1)
+			return (-1);
+		//if (printf("%d %ld died\n", print_time, philo->name) == -1)
+		//	return (false) //secu ?
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}

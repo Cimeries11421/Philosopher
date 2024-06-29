@@ -22,15 +22,22 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 	if (gettimeofday(&time, NULL) == -1)
 			return (-1);	
 	tmp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	if (state == EATING)
+	{
+		*start = tmp;
+		if (print_time_and_state(philo, start_routine, "is eating") == -1)
+			return (-1);
+	}
+	else
+	{
+		if (print_time_and_state(philo, start_routine, "is sleeping") == -1)
+			return (-1);
+	}
 	while (1)
 	{
-		if (state == EATING)
-			*start = tmp;
 		usleep(100);
-		if (check_philo_all_alive(philo, start, time) == false)
-		{
-			if (print_time_and_state(philo, start_routine, "died") == -1)
-				return (-1);
+		if (check_philo_all_alive(philo, start, start_routine, time) == false)
+		{	
 			return (-1);
 		}
 		total_time = get_time(time, tmp);
@@ -38,8 +45,6 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 		{
 			if (total_time >= philo->tbl->time_to_eat)
 			{
-				if (print_time_and_state(philo, start_routine, "is eating") == -1)
-					return (-1);
 				break ;
 			}
 		}
@@ -47,8 +52,6 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 		{
 			if (total_time >= philo->tbl->time_to_sleep)
 			{
-				if (print_time_and_state(philo, start_routine, "is sleeping") == -1)
-					return (-1);
 				break ;
 			}
 		}
