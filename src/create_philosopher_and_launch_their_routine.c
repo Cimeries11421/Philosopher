@@ -46,6 +46,7 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 		return (NULL);
 	i = 0;
 	pthread_mutex_init(&tbl->death_mutex, NULL);
+	pthread_mutex_init(&tbl->print_mutex, NULL);
 	while (i < tbl->nbr_philo)
 	{	
 		pthread_mutex_init(&tbl->forks[i].mutex, NULL);
@@ -91,4 +92,20 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 			return (-1);
 		i++;
 	}
+/*	i = 0;
+	while (i < tbl->nbr_philo)
+	{
+		if (pthread_join(tab_philo[i].t, NULL) != 0)
+			return (-1);
+		i++;
+	}
+	i = 0;*/
+/*	while (i < tbl->nbr_philo)
+	{	
+		pthread_mutex_destroy(&tbl->forks[i].mutex);
+		//pthread_detach(tab_philo[i].t);
+		tbl->forks[i].is_available = true;
+		i++;
+	}*/
+	return (0);
 }

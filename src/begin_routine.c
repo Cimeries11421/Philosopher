@@ -34,16 +34,15 @@ void	*routine(void *arg)
 		pthread_mutex_unlock(&philo->right_fork->mutex);
 		return (NULL);
 	}
+	return (NULL);
 }
 
 static int	begin_routine(t_philo *philo, int *start, int start_routine, struct timeval time)
 {
-	int	end;
 	int	total_time;
 	int	print_time;
 
 	total_time = 0;
-	int i = 5;
 	while (1)
 	{
 		if (philo->tbl->death == true)
@@ -57,8 +56,8 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 		{
 			if (is_sleeping(philo, start, start_routine, time) == -1)
 				return (-1);
-			print_time = get_time(time, start_routine);
-			//ft_printf("%d %ld is thinking\n", print_time, philo->name);
+			if (print_time_and_state(philo, start_routine, "is thinking") == -1)
+				return (-1);
 		}
 	}
 	return (0);

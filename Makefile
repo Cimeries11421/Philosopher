@@ -10,7 +10,8 @@ SRC = \
 	src/eating_sleeping_thinking.c \
 	src/wait_for_task.c \
 	src/check_philo_all_alive.c \
-	src/get_time.c 
+	src/get_time.c \
+	src/print_time_and_state.c 
 
 OBJ = $(SRC:.c=.o)
 

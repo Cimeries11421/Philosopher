@@ -44,6 +44,7 @@ typedef struct	s_tbl
 	int				nbr_of_times_need_to_eat;
 	bool			death;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	print_mutex;
 	t_forks			*forks;
 }				t_tbl;
 
@@ -67,6 +68,8 @@ void	*routine(void *arg);
 int	get_time(struct timeval time, int start);
 int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time);
 int	is_sleeping(t_philo *philo, int *start, int start_routine, struct timeval time);
-int wait_for_task(t_philo *philo, int *start, int task_time, struct timeval time);
+int wait_for_task(t_philo *philo, int *start, int task_time, e_status state);
+bool	check_philo_all_alive(t_philo *philo, int *start, struct timeval time);
+int	print_time_and_state(t_philo *philo, int begin_time, char *str);
 
 #endif
