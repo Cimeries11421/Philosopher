@@ -42,6 +42,9 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 	int	total_time;
 	int	print_time;
 
+
+	if (philo->name % 2 == 0)
+		usleep(philo->tbl->time_to_eat * 500);
 	total_time = 0;
 	while (1)
 	{
@@ -56,7 +59,7 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 		{
 			if (is_sleeping(philo, start, start_routine, time) == -1)
 				return (-1);
-			if (print_time_and_state(philo, start_routine, "is thinking") == -1)
+			if (print_time_and_state(philo, start, start_routine, "is thinking") == -1)
 				return (-1);
 		}
 	}

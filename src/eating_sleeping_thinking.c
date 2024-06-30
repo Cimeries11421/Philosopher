@@ -14,13 +14,13 @@
 
 int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time)
 {
-	if (philo->name % 2 == 0)
-		usleep(philo->tbl->time_to_eat * 500);
+	if (check_philo_all_alive(philo, start, start_routine, time) == false)
+		return (-1);
 	pthread_mutex_lock(&philo->right_fork->mutex);
 	if (philo->right_fork->is_available == true)
 	{
 		philo->right_fork->is_available = false;
-		if (print_time_and_state(philo, start_routine, "has taken a fork") == -1)
+		if (print_time_and_state(philo, start, start_routine, "has taken a fork") == -1)
 			return (-1);
 		//printf("philosopher %ld take right fork\n", philo->name);
 		pthread_mutex_lock(&philo->left_fork->mutex);
@@ -28,7 +28,9 @@ int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time
 		{
 			philo->left_fork->is_available = false;
 		//	printf("philosopher %ld take left fork\n", philo->name);
-			if (print_time_and_state(philo, start_routine, "has taken a fork") == -1)
+			if (check_philo_all_alive(philo, start, start_routine, time) == false)
+				return (-1);
+			if (print_time_and_state(philo, start, start_routine, "has taken a fork") == -1)
 				return (-1);
 			if (wait_for_task(philo, start, start_routine, EATING) == -1)
 				return (-1);

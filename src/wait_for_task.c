@@ -25,17 +25,17 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 	if (state == EATING)
 	{
 		*start = tmp;
-		if (print_time_and_state(philo, start_routine, "is eating") == -1)
+		if (print_time_and_state(philo, start, start_routine, "is eating") == -1)
 			return (-1);
 	}
 	else
 	{
-		if (print_time_and_state(philo, start_routine, "is sleeping") == -1)
+		if (print_time_and_state(philo, start, start_routine, "is sleeping") == -1)
 			return (-1);
 	}
 	while (1)
 	{
-		usleep(100);
+		usleep(50);
 		if (check_philo_all_alive(philo, start, start_routine, time) == false)
 		{	
 			return (-1);
