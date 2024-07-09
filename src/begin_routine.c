@@ -30,26 +30,50 @@ void	*routine(void *arg)
 //			philo->rf_index, philo->lf_index);
 	if (begin_routine(philo, &start, start_routine, time) == -1)
 	{
-		pthread_mutex_unlock(&philo->left_fork->mutex);
+		philo->left_fork->is_available = true;
+		philo->right_fork->is_available = true;
+		pthread_mutex_unlock(&philo->left_fork->mutex); //pas mettre ici;
+		printf("left_fork %d\n", philo->left_fork->is_available);
+		printf("right_fork %d\n", philo->right_fork->is_available);
 		pthread_mutex_unlock(&philo->right_fork->mutex);
+		printf("DEATH\n");
 		return (NULL);
 	}
 	return (NULL);
 }
 
+/*static int wait_time(int time,)
+{
+	int tmp;
+	int	total_time;
+	tmp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+}*/
+
 static int	begin_routine(t_philo *philo, int *start, int start_routine, struct timeval time)
 {
 	int	total_time;
-	int	print_time;
+	int	tmp;
 
-
+	tmp = 0;
 	if (philo->name % 2 == 0)
-		usleep(philo->tbl->time_to_eat * 500);
+	{
+		while (1)
+		{
+			if (tmp > philo->tbl->time_to_die / 2)
+				break ;
+		//	printf("tmp = %d\n", tmp);
+			tmp = get_time(time, start_routine);
+		}
+	}
+	printf("test %d\n", philo->name);
 	total_time = 0;
 	while (1)
 	{
-		if (philo->tbl->death == true)
+		if (check_philo_all_alive(philo, start, start_routine, time) == false)
+		{
+			printf("mort boucle principale\n");
 			return (-1);
+		}
 		if (philo->tbl->nbr_philo >= 2)
 		{
 			if (is_eating(philo, start, start_routine, time) == -1)

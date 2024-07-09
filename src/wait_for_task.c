@@ -37,7 +37,8 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 	{
 		usleep(50);
 		if (check_philo_all_alive(philo, start, start_routine, time) == false)
-		{	
+		{
+			printf("mort philo %d\n", philo->name);
 			return (-1);
 		}
 		total_time = get_time(time, tmp);
@@ -56,5 +57,6 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 			}
 		}
 	}
+	printf("philo %d passe la\n", philo->name);
 	return (0);
 }

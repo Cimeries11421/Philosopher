@@ -16,6 +16,7 @@ bool	check_philo_all_alive(t_philo *philo, int *start, int start_routine, struct
 {
 	int	total_time;
 
+//	printf("PHILO %d passe la\n", philo->name);
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	total_time = get_time(time, *start);
 	if (philo->tbl->death == true)
@@ -26,11 +27,11 @@ bool	check_philo_all_alive(t_philo *philo, int *start, int start_routine, struct
 	if (total_time >= philo->tbl->time_to_die)
 	{
 		philo->tbl->death = true;
+		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		if (print_time_and_state(philo, start, start_routine, RED"died"RESET) == -1)
 			return (-1);
 	//	if (printf("%d %ld died\n", print_time, philo->name) == -1)
 	//		return (false); //secu ?
-		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->tbl->death_mutex);

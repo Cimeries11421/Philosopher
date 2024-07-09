@@ -19,8 +19,8 @@ int	print_time_and_state(t_philo *philo, int *start, int start_routine, char *st
 
 	print_time = get_time(time, start_routine);
 //	printf("HELLO\n");
-/*	if (check_philo_all_alive(philo, start, start_routine, time) == false)
-		return (-1);*/
+	if (check_philo_all_alive(philo, start, start_routine, time) == false)
+		return (-1);
 	if (printf("%d %ld %s\n", print_time, philo->name, str) == -1)
 		return (-1);
 	return (0);
