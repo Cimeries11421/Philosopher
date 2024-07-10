@@ -46,6 +46,7 @@ typedef struct	s_tbl
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	t_forks			*forks;
+	int				nbr_philo_full;
 }				t_tbl;
 
 typedef struct	s_philo
@@ -53,13 +54,13 @@ typedef struct	s_philo
 	pthread_t	t;
 	size_t		name;
 	bool		meal_taken;
+	int			nbr_meal;
 	t_forks		*right_fork;
 	size_t		rf_index; // a enlever
 	size_t		lf_index; // a enlever
 	t_forks		*left_fork;
 	t_tbl		*tbl;
 	e_status	status;
-	
 }				t_philo;
 
 int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl);

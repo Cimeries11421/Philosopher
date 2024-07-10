@@ -32,11 +32,8 @@ void	*routine(void *arg)
 	{
 		philo->left_fork->is_available = true;
 		philo->right_fork->is_available = true;
-		pthread_mutex_unlock(&philo->left_fork->mutex); //pas mettre ici;
-		printf("left_fork %d\n", philo->left_fork->is_available);
-		printf("right_fork %d\n", philo->right_fork->is_available);
-		pthread_mutex_unlock(&philo->right_fork->mutex);
-		printf("DEATH\n");
+//		pthread_mutex_unlock(&philo->left_fork->mutex); //pas mettre ici;
+//		pthread_mutex_unlock(&philo->right_fork->mutex);
 		return (NULL);
 	}
 	return (NULL);
@@ -65,13 +62,12 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 			tmp = get_time(time, start_routine);
 		}
 	}
-	printf("test %d\n", philo->name);
 	total_time = 0;
 	while (1)
 	{
 		if (check_philo_all_alive(philo, start, start_routine, time) == false)
 		{
-			printf("mort boucle principale\n");
+			//printf("mort boucle principale\n");
 			return (-1);
 		}
 		if (philo->tbl->nbr_philo >= 2)
@@ -86,6 +82,19 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 			if (print_time_and_state(philo, start, start_routine, "is thinking") == -1)
 				return (-1);
 		}
+		printf(PINK"nbr times to eat = %d\n"RESET, philo->tbl->nbr_of_times_need_to_eat);
+		printf(PINK"philo %d a manger %d fois\n"RESET, philo->name, philo->nbr_meal);
+		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
+		{
+			philo->tbl->nbr_philo_full++;
+			printf(GREEN"nbr de philo repus %d\n"RESET, philo->tbl->nbr_philo_full);
+			
+		}
+		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
+		{
+			return (0);
+		}
+	//	usleep(30);
 	}
 	return (0);
 }
