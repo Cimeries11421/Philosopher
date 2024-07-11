@@ -1,4 +1,4 @@
-#ifndef PHILO_H
+###ifndef PHILO_H
 #define PHILO_H
 
 #include <pthread.h>
@@ -46,7 +46,7 @@ typedef struct	s_tbl
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	t_forks			*forks;
-	int				nbr_philo_full;
+	size_t			nbr_philo_full;
 }				t_tbl;
 
 typedef struct	s_philo

@@ -65,6 +65,7 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 	total_time = 0;
 	while (1)
 	{
+//		printf(PINK"nbr times to eat = %d\n"RESET, philo->tbl->nbr_of_times_need_to_eat);
 		if (check_philo_all_alive(philo, start, start_routine, time) == false)
 		{
 			//printf("mort boucle principale\n");
@@ -75,6 +76,17 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 			if (is_eating(philo, start, start_routine, time) == -1)
 				return (-1);
 		}
+	//	printf(PINK"philo %d a manger %d fois\n"RESET, philo->name, philo->nbr_meal);
+		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
+		{
+			philo->tbl->nbr_philo_full++;
+	//		printf(GREEN"nbr de philo repus %d\n"RESET, philo->tbl->nbr_philo_full);
+			
+		}
+		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
+		{
+			return (0);
+		}
 		if (philo->meal_taken == true)
 		{
 			if (is_sleeping(philo, start, start_routine, time) == -1)
@@ -82,19 +94,7 @@ static int	begin_routine(t_philo *philo, int *start, int start_routine, struct t
 			if (print_time_and_state(philo, start, start_routine, "is thinking") == -1)
 				return (-1);
 		}
-		printf(PINK"nbr times to eat = %d\n"RESET, philo->tbl->nbr_of_times_need_to_eat);
-		printf(PINK"philo %d a manger %d fois\n"RESET, philo->name, philo->nbr_meal);
-		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
-		{
-			philo->tbl->nbr_philo_full++;
-			printf(GREEN"nbr de philo repus %d\n"RESET, philo->tbl->nbr_philo_full);
-			
-		}
-		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
-		{
-			return (0);
-		}
-	//	usleep(30);
+		//	usleep(30);
 	}
 	return (0);
 }

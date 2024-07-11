@@ -21,7 +21,7 @@ int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time
 	{
 		philo->right_fork->is_available = false;
 		pthread_mutex_unlock(&philo->right_fork->mutex);
-		if (print_time_and_state(philo, start, start_routine, "has taken a fork") == -1)
+		if (print_time_and_state(philo, start, start_routine, BLUE"has taken a fork"RESET) == -1)
 			return (-1);
 		//printf("philosopher %ld take right fork\n", philo->name);
 		pthread_mutex_lock(&philo->left_fork->mutex);
@@ -38,11 +38,13 @@ int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time
 				return (-1);
 			philo->nbr_meal++;
 			philo->meal_taken = true;
-			philo->left_fork->is_available = true;
+			//pthread_mutex_unlock(&philo->left_fork->mutex);
+			philo->left_fork->is_available = true; // mettre des locks unlocks a chaque booleens
+			philo->right_fork->is_available = true;
+			return (0);
 		}
 	//	printf("philosopher %ld put back left fork\n", philo->name);
 		pthread_mutex_unlock(&philo->left_fork->mutex);
-		philo->right_fork->is_available = true;
 	}
 	//printf("philosopher %ld put back right fork\n", philo->name);
 	pthread_mutex_unlock(&philo->right_fork->mutex);
