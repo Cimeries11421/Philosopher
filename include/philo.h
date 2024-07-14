@@ -1,4 +1,4 @@
-###ifndef PHILO_H
+#ifndef PHILO_H
 #define PHILO_H
 
 #include <pthread.h>
@@ -42,11 +42,12 @@ typedef struct	s_tbl
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nbr_of_times_need_to_eat;
+	size_t			nbr_philo_full;
+	long			start_routine;
 	bool			death;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	t_forks			*forks;
-	size_t			nbr_philo_full;
 }				t_tbl;
 
 typedef struct	s_philo
@@ -54,6 +55,7 @@ typedef struct	s_philo
 	pthread_t	t;
 	size_t		name;
 	bool		meal_taken;
+	bool		fork_taken;
 	int			nbr_meal;
 	t_forks		*right_fork;
 	size_t		rf_index; // a enlever
@@ -66,11 +68,13 @@ typedef struct	s_philo
 int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl);
 int	create_philosophers_and_launch_their_routine(t_tbl *tbl);
 void	*routine(void *arg);
-int	get_time(struct timeval time, int start);
-int	is_eating(t_philo *philo, int *start, int start_routine, struct timeval time);
-int	is_sleeping(t_philo *philo, int *start, int start_routine, struct timeval time);
-int wait_for_task(t_philo *philo, int *start, int task_time, e_status state);
-bool	check_philo_all_alive(t_philo *philo, int *start, int start_routine, struct timeval time);
-int	print_time_and_state(t_philo *philo, int *start, int start_routine, char *str);
+long	get_time(struct timeval time, long start);
+int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval time);
+int	is_sleeping(t_philo *philo, long *start, long start_routine, struct timeval time);
+//int wait_for_task(t_philo *philo, long *start, int task_time, e_status state);
+
+int wait_for_task(t_philo *philo, long *start, long start_routine, e_status state);
+bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, struct timeval time);
+int	print_time_and_state(t_philo *philo, long *start, long start_routine, char *str);
 
 #endif

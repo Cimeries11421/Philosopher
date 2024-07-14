@@ -53,8 +53,6 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 		tbl->forks[i].is_available = true;
 		i++;
 	}
-	printf("tbl->time_to_eat = %d\n" ,tbl->time_to_eat);
-	printf("tbl->time_to_die = %d\n" ,tbl->time_to_die);
 	tab_philo = malloc(tbl->nbr_philo * sizeof(t_philo));
 	if (tab_philo == NULL)
 	{
@@ -66,14 +64,17 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 
 static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 {
-	size_t	i;
+	size_t			i;
+	struct timeval	time;
 
 	i = 0;
+	pthread_mutex_lock(&tbl->death_mutex);
 	while (i < tbl->nbr_philo)
 	{
 		tab_philo[i] = (t_philo){0}; //status sur thinking de base;
 		tab_philo[i].tbl = tbl;
 		tab_philo[i].name = i;
+		tab_philo[i].fork_taken = false;
 		if (i == tbl->nbr_philo - 1)
 		{
 			tab_philo[i].right_fork = &tbl->forks[i];
@@ -92,14 +93,19 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 			return (-1);
 		i++;
 	}
-/*	i = 0;
+	if (gettimeofday(&time, NULL) == -1)
+		return (NULL);
+	tbl->start_routine = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	printf("tbl->start_routine = %ld\n", tbl->start_routine);
+	pthread_mutex_unlock(&tbl->death_mutex);
+	i = 0;
 	while (i < tbl->nbr_philo)
 	{
 		if (pthread_join(tab_philo[i].t, NULL) != 0)
 			return (-1);
 		i++;
 	}
-	i = 0;*/
+//	i = 0;
 /*	while (i < tbl->nbr_philo)
 	{	
 		pthread_mutex_destroy(&tbl->forks[i].mutex);

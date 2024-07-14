@@ -12,10 +12,10 @@
 
 #include "philo.h"
 
-int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
+int wait_for_task(t_philo *philo, long *start, long start_routine, e_status state)
 {
-	int		total_time;
-	int		tmp;
+	long		total_time;
+	long		tmp;
 	struct timeval time;
 
 	//printf(YELLOW"start = %d for philo %ld\n"RESET, *start, philo->name);
@@ -25,12 +25,12 @@ int wait_for_task(t_philo *philo, int *start, int start_routine, e_status state)
 	if (state == EATING)
 	{
 		*start = tmp;
-		if (print_time_and_state(philo, start, start_routine, "is eating") == -1)
+		if (print_time_and_state(philo, start, start_routine, ORANGE"is eating"RESET) == -1)
 			return (-1);
 	}
 	else
 	{
-		if (print_time_and_state(philo, start, start_routine, "is sleeping") == -1)
+		if (print_time_and_state(philo, start, start_routine, PINK"is sleeping"RESET) == -1)
 			return (-1);
 	}
 	while (1)
