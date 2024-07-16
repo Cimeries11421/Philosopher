@@ -18,7 +18,6 @@ int wait_for_task(t_philo *philo, long *start, long start_routine, e_status stat
 	long		tmp;
 	struct timeval time;
 
-	//printf(YELLOW"start = %d for philo %ld\n"RESET, *start, philo->name);
 	if (gettimeofday(&time, NULL) == -1)
 			return (-1);	
 	tmp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
@@ -44,16 +43,12 @@ int wait_for_task(t_philo *philo, long *start, long start_routine, e_status stat
 		if (state == EATING)
 		{
 			if (total_time >= philo->tbl->time_to_eat)
-			{
 				break ;
-			}
 		}
 		if (state == SLEEPING)
 		{
 			if (total_time >= philo->tbl->time_to_sleep)
-			{
 				break ;
-			}
 		}
 	}
 	return (0);

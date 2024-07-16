@@ -54,7 +54,7 @@ typedef struct	s_philo
 {
 	pthread_t	t;
 	size_t		name;
-	bool		meal_taken;
+	bool		start;
 	bool		fork_taken;
 	int			nbr_meal;
 	t_forks		*right_fork;

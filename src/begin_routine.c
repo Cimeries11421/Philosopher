@@ -20,16 +20,15 @@ void	*routine(void *arg)
 	struct timeval	time;
 	long			start;
 	long 			start_routine;
+	int				i;
 	
-	philo = (t_philo*)arg;
-	start_routine = philo->tbl->start_routine;
-	start = start_routine;
-//	printf("time.tv_sec = %d  usec = %d\n", time.tv_sec, time.tv_usec);
-//	printf("start = %ld\n", start);
-	//printf("\nphilo %ld got right_fork number : %ld and left_fork_number : %ld\n\n", philo->name,
-//			philo->rf_index, philo->lf_index);
+	i = 0;
+	philo = (t_philo*)arg;	
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	pthread_mutex_unlock(&philo->tbl->death_mutex);
+	start_routine = philo->tbl->start_routine;
+	start = start_routine;
+	philo->start = 1;
 	if (begin_routine(philo, &start, start_routine, time) == -1)
 	{
 		philo->left_fork->is_available = true; //a enlever je crois 
@@ -50,40 +49,24 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine, struct
 		time_to_wait = philo->tbl->time_to_eat;
 	else
 		time_to_wait = philo->tbl->time_to_die;
-	if (philo->name % 2 == 0)
-	{
-		while (1)
-		{
-			if (tmp > time_to_wait / 2)
-				break ;
-			tmp = get_time(time, start_routine);
-		}
-	}
+	if (philo->name % 2 != 0)
+		usleep(time_to_wait / 2 * 1000);
 	total_time = 0;
 	while (1)
 	{
-		if (check_philo_all_alive(philo, start, start_routine, time) == false)
-		{
-			//printf("mort boucle principale\n");
+		if (is_eating(philo, start, start_routine, time) == -1)
 			return (-1);
-		}
-		if (philo->tbl->nbr_philo >= 2)
-		{
-			if (is_eating(philo, start, start_routine, time) == -1)
-				return (-1);
-		}
 		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
 			philo->tbl->nbr_philo_full++;
 		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
 			return (0);
-		if (philo->meal_taken == true)
-		{
-			if (is_sleeping(philo, start, start_routine, time) == -1)
-				return (-1);
-			if (print_time_and_state(philo, start, start_routine, MAGENTA"is thinking"RESET) == -1)
-				return (-1);
-		}
-		usleep(100);
+		if (is_sleeping(philo, start, start_routine, time) == -1)
+			return (-1);
+		if (print_time_and_state(philo, start, start_routine, MAGENTA"is thinking"RESET) == -1)
+			return (-1);
+	/*	if (check_philo_all_alive(philo, start, start_routine, time) == false)
+			return (-1);*/
+		usleep(10);
 	}
 	return (0);
 }

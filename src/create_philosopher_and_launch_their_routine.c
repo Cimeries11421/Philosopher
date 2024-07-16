@@ -75,6 +75,7 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 		tab_philo[i].tbl = tbl;
 		tab_philo[i].name = i;
 		tab_philo[i].fork_taken = false;
+		tab_philo[i].start = false;
 		if (i == tbl->nbr_philo - 1)
 		{
 			tab_philo[i].right_fork = &tbl->forks[i];
@@ -99,13 +100,6 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 	printf("tbl->start_routine = %ld\n", tbl->start_routine);
 	pthread_mutex_unlock(&tbl->death_mutex);
 	i = 0;
-	while (i < tbl->nbr_philo)
-	{
-		if (pthread_join(tab_philo[i].t, NULL) != 0)
-			return (-1);
-		i++;
-	}
-//	i = 0;
 /*	while (i < tbl->nbr_philo)
 	{	
 		pthread_mutex_destroy(&tbl->forks[i].mutex);
