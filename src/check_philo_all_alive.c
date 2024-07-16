@@ -31,7 +31,6 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}
-	printf("total_time = %d\n", total_time);
 	if (total_time >= philo->tbl->time_to_die)
 	{
 		philo->tbl->death = true;
