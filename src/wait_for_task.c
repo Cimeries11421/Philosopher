@@ -12,6 +12,17 @@
 
 #include "philo.h"
 
+int	check_philo_is_dead_during_task(t_philo *philo, long *start, struct timeval time, e_status state)
+{
+	long	life_timer;
+
+	life_timer = get_time(time, *start);
+	if (state == EATING)
+	{
+		
+	}
+}
+
 int wait_for_task(t_philo *philo, long *start, long start_routine, e_status state)
 {
 	long		total_time;
