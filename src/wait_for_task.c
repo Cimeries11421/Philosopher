@@ -19,7 +19,6 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 	struct timeval time;
 
 	tmp = get_time(time, *start);
-	printf("tmp = %ld\n", tmp);
 	//check bool death ?
 	//pas besoin d'unlock les fourchettes car deja unlock quand il mange
 //	printf("start = %ld\n", *start);
@@ -31,6 +30,9 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 		timer = tmp + philo->tbl->time_to_sleep;
 	if (timer >= philo->tbl->time_to_die)
 	{
+	//	while ()
+	//	{}
+	//	usleep(410 * 1000);
 		if (print_time_and_state(philo, start, start_routine, RED"died"RESET) == -1)
 			return (-1); //probleme unlock a nouveau les fourchettes, je dois les unlocks ?  
 

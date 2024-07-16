@@ -17,11 +17,13 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 	long	total_time;
 	long	print_time;
 
+	//printf("COUCOU\n");
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	total_time = get_time(time, *start); //necessaire ? 
 	print_time = get_time(time, start_routine);
 	if (philo->tbl->death == true)
 	{	
+		printf("COUCOU");
 		pthread_mutex_lock(&philo->right_fork->mutex);
 		philo->right_fork->is_available = true;
 		pthread_mutex_unlock(&philo->right_fork->mutex);
@@ -31,11 +33,10 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}
-//	printf("philo %ld total_time = %ld\n", philo->name, total_time);
 	if (total_time >= philo->tbl->time_to_die)
 	{
-		pthread_mutex_unlock(&philo->tbl->death_mutex);
-		pthread_mutex_lock(&philo->tbl->death_mutex);
+		printf("COUCOU");
+		printf("COUCOU");
 		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		pthread_mutex_lock(&philo->right_fork->mutex);
@@ -45,11 +46,7 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 		philo->left_fork->is_available = true;
 		pthread_mutex_unlock(&philo->left_fork->mutex);
 		if (print_time_and_state(philo, start, start_routine, RED"died"RESET) == -1)
-			return (-1);
-
-		//if (printf(RED"%ld %ld %ld died\n"RESET,total_time, print_time, philo->name) == -1)
-	//	if (printf("%ld %ld died\n", print_time, philo->name) == -1)
-	//		return (false); //secu ?
+			return (false); //secu ?
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->tbl->death_mutex);

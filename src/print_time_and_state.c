@@ -19,15 +19,10 @@ int	print_time_and_state(t_philo *philo, long *start, long start_routine, char *
 	long	total_time;
 
 
-	pthread_mutex_lock(&philo->tbl->death_mutex);
+	pthread_mutex_lock(&philo->tbl->print_mutex);
 	print_time = get_time(time, start_routine);
 	total_time = get_time(time, *start);
-
-	pthread_mutex_lock(&philo->tbl->print_mutex);
-//	printf("total_time = %ld\n", total_time);
-//	printf("print_time = %ld\n", print_time);
-//	printf("HELLO\n");
-//
+	pthread_mutex_lock(&philo->tbl->death_mutex);
 	if (philo->tbl->death == true)
 	{
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
