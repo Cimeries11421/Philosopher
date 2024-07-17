@@ -30,12 +30,14 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 		timer = tmp + philo->tbl->time_to_sleep;
 	if (timer >= philo->tbl->time_to_die)
 	{
-	//	while ()
-	//	{}
-	//	usleep(410 * 1000);
-		if (print_time_and_state(philo, start, start_routine, RED"died"RESET) == -1)
+		while (1)
+		{
+			if (tmp >= philo->tbl->time_to_die)
+				break;
+			tmp = get_time(time, *start);
+		}
+		if (print_death(philo, start_routine, RED"died"RESET) == -1)
 			return (-1); //probleme unlock a nouveau les fourchettes, je dois les unlocks ?  
-
 		pthread_mutex_lock(&philo->tbl->death_mutex);
 		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
@@ -75,7 +77,7 @@ int wait_for_task(t_philo *philo, long *start, long start_routine, e_status stat
 	}
 	while (1)
 	{
-		usleep(200);
+		usleep(100);
 	//	if (state == EATING)
 	//		printf(PINK"philo %ld start = %ld\n"RESET, philo->name, *start);
 		total_time = get_time(time, tmp);

@@ -44,7 +44,7 @@ clean :
 
 
 sanitize:
-	make CFLAGS="-Wall -Wextra -g3 -fsanitize=address"
+	make CFLAGS="-Wall -Wextra -g3 -fsanitize=thread"
 
 debug:
 	make CFLAGS="-Wall -Wextra -g3"
