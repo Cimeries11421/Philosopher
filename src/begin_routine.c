@@ -31,10 +31,11 @@ void	*routine(void *arg)
 	philo->start = 1;
 	if (begin_routine(philo, &start, start_routine, time) == -1)
 	{
-		philo->left_fork->is_available = true; //a enlever je crois 
-		philo->right_fork->is_available = true;
+	//	philo->left_fork->is_available = true; //a enlever je crois 
+	//	philo->right_fork->is_available = true;
 		return (NULL);
 	}
+	//printf("why here\n");
 	return (NULL);
 }
 

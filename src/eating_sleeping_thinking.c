@@ -27,10 +27,12 @@ int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval ti
 		if (philo->right_fork->is_available == true)
 		{
 			philo->right_fork->is_available = false;
-			pthread_mutex_unlock(&philo->right_fork->mutex);
 			philo->fork_taken = true;
 			if (print_time_and_state(philo, start, start_routine, BLUE"has taken a fork"RESET) == -1)
+			{
+				pthread_mutex_unlock(&philo->right_fork->mutex);
 				return (-1);
+			}
 			flag = 1;
 			//printf(BLUE"philo %d take right fork\n"RESET, philo->name);
 		}
