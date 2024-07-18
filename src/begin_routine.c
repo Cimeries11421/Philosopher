@@ -30,12 +30,7 @@ void	*routine(void *arg)
 	start = start_routine;
 	philo->start = 1;
 	if (begin_routine(philo, &start, start_routine, time) == -1)
-	{
-	//	philo->left_fork->is_available = true; //a enlever je crois 
-	//	philo->right_fork->is_available = true;
 		return (NULL);
-	}
-	//printf("why here\n");
 	return (NULL);
 }
 
@@ -58,9 +53,18 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine, struct
 		if (is_eating(philo, start, start_routine, time) == -1)
 			return (-1);
 		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
+		{
+			pthread_mutex_lock(&philo->tbl->meal_mutex);
 			philo->tbl->nbr_philo_full++;
+			pthread_mutex_unlock(&philo->tbl->meal_mutex);
+		}
+		pthread_mutex_lock(&philo->tbl->meal_mutex);
 		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
+		{
+			pthread_mutex_unlock(&philo->tbl->meal_mutex);
 			return (0);
+		}
+		pthread_mutex_unlock(&philo->tbl->meal_mutex);
 		if (is_sleeping(philo, start, start_routine, time) == -1)
 			return (-1);
 		if (print_time_and_state(philo, start, start_routine, MAGENTA"is thinking"RESET) == -1)
