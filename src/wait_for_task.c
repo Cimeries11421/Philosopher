@@ -36,9 +36,11 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 				break;
 			tmp = get_time(time, *start);
 		}
+		pthread_mutex_lock(&philo->tbl->print_mutex);
+		pthread_mutex_lock(&philo->tbl->death_mutex);
 		if (print_death(philo, start_routine, RED"died"RESET) == -1)
 			return (-1); //probleme unlock a nouveau les fourchettes, je dois les unlocks ?  
-		pthread_mutex_lock(&philo->tbl->death_mutex);
+		pthread_mutex_unlock(&philo->tbl->print_mutex);
 		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (true);

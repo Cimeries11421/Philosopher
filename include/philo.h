@@ -43,6 +43,7 @@ typedef struct	s_tbl
 	int				time_to_sleep;
 	int				nbr_of_times_need_to_eat;
 	size_t			nbr_philo_full;
+	pthread_mutex_t	meal_mutex;
 	long			start_routine;
 	bool			death;
 	pthread_mutex_t	death_mutex;
