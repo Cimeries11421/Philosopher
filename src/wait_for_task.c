@@ -48,6 +48,26 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 	return (false);
 } 
 
+static int print_task(t_philo *philo, long *start, long start_routine, e_status state)
+{
+	if (state == EATING)
+	{
+		if (print_time_and_state(philo, start, start_routine, ORANGE"is eating"RESET) == -1)
+			return (-1);
+		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)
+			return (-1);
+	}
+	else if (state == SLEEPING)
+	{
+		if (print_time_and_state(philo, start, start_routine, PINK"is sleeping"RESET) == -1)
+			return (-1);
+	
+		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)
+			return (-1);
+	}
+	return (0);
+}
+
 int wait_for_task(t_philo *philo, long *start, long start_routine, e_status state)
 {
 	long		total_time;
@@ -60,28 +80,17 @@ int wait_for_task(t_philo *philo, long *start, long start_routine, e_status stat
 	if (state == EATING)
 	{
 		*start = tmp;
-		if (print_time_and_state(philo, start, start_routine, ORANGE"is eating"RESET) == -1)
+		if (print_task(philo, start, start_routine, EATING) == -1)
 			return (-1);
-		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)
-		{
-			return (-1);
-		}
 	}
 	else if (state == SLEEPING)
 	{
-		if (print_time_and_state(philo, start, start_routine, PINK"is sleeping"RESET) == -1)
+		if (print_task(philo, start, start_routine, SLEEPING) == -1)
 			return (-1);
-	
-		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)
-		{
-			return (-1);
-		}
 	}
 	while (1)
 	{
 		usleep(100);
-	//	if (state == EATING)
-	//		printf(PINK"philo %ld start = %ld\n"RESET, philo->name, *start);
 		total_time = get_time(time, tmp);
 		if (state == EATING)
 		{

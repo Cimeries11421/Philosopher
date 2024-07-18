@@ -12,18 +12,19 @@
 
 #include "philo.h"
 
-static int	begin_routine(t_philo *philo, long *start, long start_routine, struct timeval time);
+static int	begin_routine(t_philo *philo, long *start, long start_routine,
+				struct timeval time);
 
 void	*routine(void *arg)
 {
 	t_philo			*philo;
 	struct timeval	time;
 	long			start;
-	long 			start_routine;
+	long			start_routine;
 	int				i;
-	
+
 	i = 0;
-	philo = (t_philo*)arg;	
+	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	pthread_mutex_unlock(&philo->tbl->death_mutex);
 	start_routine = philo->tbl->start_routine;
@@ -34,7 +35,26 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-static int	begin_routine(t_philo *philo, long *start, long start_routine, struct timeval time)
+static bool	check_meal_eaten(t_philo *philo)
+{
+	if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
+	{
+		pthread_mutex_lock(&philo->tbl->meal_mutex);
+		philo->tbl->nbr_philo_full++;
+		pthread_mutex_unlock(&philo->tbl->meal_mutex);
+	}
+	pthread_mutex_lock(&philo->tbl->meal_mutex);
+	if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
+	{
+		pthread_mutex_unlock(&philo->tbl->meal_mutex);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->tbl->meal_mutex);
+	return (false);
+}
+
+static int	begin_routine(t_philo *philo, long *start, long start_routine,
+				struct timeval time)
 {
 	int	total_time;
 	int	time_to_wait;
@@ -52,25 +72,12 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine, struct
 	{
 		if (is_eating(philo, start, start_routine, time) == -1)
 			return (-1);
-		if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
-		{
-			pthread_mutex_lock(&philo->tbl->meal_mutex);
-			philo->tbl->nbr_philo_full++;
-			pthread_mutex_unlock(&philo->tbl->meal_mutex);
-		}
-		pthread_mutex_lock(&philo->tbl->meal_mutex);
-		if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
-		{
-			pthread_mutex_unlock(&philo->tbl->meal_mutex);
+		if (check_meal_eaten(philo) == true)
 			return (0);
-		}
-		pthread_mutex_unlock(&philo->tbl->meal_mutex);
 		if (is_sleeping(philo, start, start_routine, time) == -1)
 			return (-1);
-		if (print_time_and_state(philo, start, start_routine, MAGENTA"is thinking"RESET) == -1)
+		if (print_time_and_state(philo, start, start_routine, "is thinking") == -1)
 			return (-1);
-	/*	if (check_philo_all_alive(philo, start, start_routine, time) == false)
-			return (-1);*/
 		usleep(10);
 	}
 	return (0);

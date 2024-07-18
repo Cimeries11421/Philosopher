@@ -12,60 +12,61 @@
 
 #include "philo.h"
 
+static int take_right_fork(t_philo *philo, long *start, long start_routine, struct timeval time);
+static void put_back_forks(t_philo *philo);
+
 int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval time)
 {
-	int flag;
-
-	flag = 0;
-	/*if (check_philo_all_alive(philo, start, start_routine, time) == false)
-		return (-1);*/
 	while (1)
 	{
 		if (check_philo_all_alive(philo, start, start_routine, time) == false)
 			return (-1);
-		pthread_mutex_lock(&philo->right_fork->mutex);
-		if (philo->right_fork->is_available == true)
-		{
-			philo->right_fork->is_available = false;
-			philo->fork_taken = true;
-			if (print_time_and_state(philo, start, start_routine, BLUE"has taken a fork"RESET) == -1)
-			{
-				pthread_mutex_unlock(&philo->right_fork->mutex);
-				return (-1);
-			}
-			flag = 1;
-			//printf(BLUE"philo %d take right fork\n"RESET, philo->name);
-		}
-		//if (flag != 1)
-		pthread_mutex_unlock(&philo->right_fork->mutex);
+		if (take_right_fork(philo, start, start_routine, time) == -1)
+			return (-1);
 		pthread_mutex_lock(&philo->left_fork->mutex);
-		if (philo->fork_taken == true && philo->left_fork->is_available == true) //date race ?  
+		if (philo->fork_taken == true && philo->left_fork->is_available == true) 
 		{
 			philo->left_fork->is_available = false;
 			pthread_mutex_unlock(&philo->left_fork->mutex);
-			/*if (check_philo_all_alive(philo, start, start_routine, time) == false)
-			return (-1);*/ // necessaire ici ? 
 			if (print_time_and_state(philo, start, start_routine, GREEN"has taken a fork"RESET) == -1)
 				return (-1);
 			if (wait_for_task(philo, start, start_routine, EATING) == -1)
 				return (-1);
 			philo->nbr_meal++;
-			pthread_mutex_lock(&philo->left_fork->mutex);
-			philo->left_fork->is_available = true; // mettre des locks unlocks a chaque booleens
-			pthread_mutex_unlock(&philo->left_fork->mutex);
-			pthread_mutex_lock(&philo->right_fork->mutex);
-			philo->right_fork->is_available = true;
-			pthread_mutex_unlock(&philo->right_fork->mutex);
-			philo->fork_taken = false;
+			put_back_forks(philo);
 			break ;
 		}
-		//	printf("philosopher %ld put back left fork\n", philo->name);
-		//	else if (philo->left_fork->is_available == false)
 		pthread_mutex_unlock(&philo->left_fork->mutex);
-		//printf("philosopher %ld put back right fork\n", philo->name);
-		//return (0);
 	}
 	return (0);
+}
+
+static int take_right_fork(t_philo *philo, long *start, long start_routine, struct timeval time)
+{
+	pthread_mutex_lock(&philo->right_fork->mutex);
+	if (philo->right_fork->is_available == true)
+	{
+		philo->right_fork->is_available = false;
+		philo->fork_taken = true;
+		if (print_time_and_state(philo, start, start_routine, BLUE"has taken a fork"RESET) == -1)
+		{
+			pthread_mutex_unlock(&philo->right_fork->mutex);
+			return (-1);
+		}
+	}
+	pthread_mutex_unlock(&philo->right_fork->mutex);
+	return (0);
+}
+
+static void put_back_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->left_fork->mutex);
+	philo->left_fork->is_available = true;
+	pthread_mutex_unlock(&philo->left_fork->mutex);
+	pthread_mutex_lock(&philo->right_fork->mutex);
+	philo->right_fork->is_available = true;
+	pthread_mutex_unlock(&philo->right_fork->mutex);
+	philo->fork_taken = false;
 }
 
 int	is_sleeping(t_philo *philo, long *start, long start_routine, struct timeval time)
