@@ -17,34 +17,19 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 	long	total_time;
 	long	print_time;
 
-	//printf("COUCOU\n");
 	pthread_mutex_lock(&philo->tbl->death_mutex);
-	total_time = get_time(time, *start); //necessaire ? 
+	total_time = get_time(time, *start);
 	print_time = get_time(time, start_routine);
 	if (philo->tbl->death == true)
 	{	
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
-	/*	pthread_mutex_lock(&philo->right_fork->mutex);
-		philo->right_fork->is_available = true;
-		pthread_mutex_unlock(&philo->right_fork->mutex);
-		pthread_mutex_lock(&philo->left_fork->mutex);
-		philo->left_fork->is_available = true;
-		pthread_mutex_unlock(&philo->left_fork->mutex);*/ //comment faire si deja unlock
 		return (false);
 	}
 	if (total_time >= philo->tbl->time_to_die)
 	{
-		//pthread_mutex_unlock(&philo->tbl->death_mutex);
-		/*pthread_mutex_lock(&philo->right_fork->mutex);
-		philo->right_fork->is_available = true;
-		pthread_mutex_unlock(&philo->right_fork->mutex);
-		pthread_mutex_lock(&philo->left_fork->mutex);
-		philo->left_fork->is_available = true;
-		pthread_mutex_unlock(&philo->left_fork->mutex);*/
-		//pthread_mutex_lock(&philo->tbl->death_mutex);
 		if (print_death(philo, start_routine, RED"died"RESET) == -1)
 			return (false); //secu ? 
-		philo->tbl->death = true; //besoin de lock unlock ? 
+		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}

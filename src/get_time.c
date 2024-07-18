@@ -21,6 +21,5 @@ long	get_time(struct timeval time, long start)
 		return (-1);
 	tmp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	print_time = tmp - start;
-	//printf("start = %ld  tmp = %ld\n", start, tmp);
 	return (print_time);
 }

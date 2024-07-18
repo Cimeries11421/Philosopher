@@ -72,11 +72,10 @@ void	*routine(void *arg);
 long	get_time(struct timeval time, long start);
 int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval time);
 int	is_sleeping(t_philo *philo, long *start, long start_routine, struct timeval time);
-//int wait_for_task(t_philo *philo, long *start, int task_time, e_status state);
-
 int wait_for_task(t_philo *philo, long *start, long start_routine, e_status state);
 bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, struct timeval time);
 int	print_time_and_state(t_philo *philo, long *start, long start_routine, char *str);
 int	print_death(t_philo *philo, long start_routine, char *str);
+int	destroy_mutex(t_tbl *tbl);
 
 #endif

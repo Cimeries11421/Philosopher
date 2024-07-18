@@ -19,7 +19,7 @@ int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl)
 {
 	if (ac > 6 || ac < 5)
 	{
-		write(2,"need 4 or 5 arguments\n", 23);
+		write(2, "need 4 or 5 arguments\n", 23);
 		return (-1);
 	}
 	if (check_args(av) == -1)
@@ -31,6 +31,12 @@ int	parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl)
 	tbl->time_to_die = ft_strtol(av[2]);
 	tbl->time_to_eat = ft_strtol(av[3]);
 	tbl->time_to_sleep = ft_strtol(av[4]);
+	if (tbl->nbr_philo == 0 || tbl->time_to_die == 0
+		|| tbl->time_to_eat == 0 || tbl->time_to_sleep == 0)
+	{
+		write(2, "Wrong Input\n", 13);
+		return (-1);
+	}
 	if (av[5] != NULL)
 		tbl->nbr_of_times_need_to_eat = ft_strtol(av[5]);
 	return (0);

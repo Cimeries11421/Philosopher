@@ -20,14 +20,12 @@ int	print_death(t_philo *philo, long start_routine, char *str)
 
 
 	print_time = get_time(time, start_routine);
-	//pthread_mutex_lock(&philo->tbl->death_mutex);
 	if (philo->tbl->death == true)
 	{
 		pthread_mutex_unlock(&philo->tbl->print_mutex);
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (-1);
 	}
-	//pthread_mutex_unlock(&philo->tbl->death_mutex);
 	if (printf("%ld %ld %s\n", print_time, philo->name, str) == -1)
 		return (-1);
 	return (0);
@@ -42,7 +40,6 @@ int	print_time_and_state(t_philo *philo, long *start, long start_routine, char *
 
 	pthread_mutex_lock(&philo->tbl->print_mutex);
 	print_time = get_time(time, start_routine);
-	//total_time = get_time(time, *start);
 	if (check_philo_all_alive(philo, start, start_routine, time) == false)
 	{
 		pthread_mutex_unlock(&philo->tbl->print_mutex);

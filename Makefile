@@ -11,7 +11,8 @@ SRC = \
 	src/wait_for_task.c \
 	src/check_philo_all_alive.c \
 	src/get_time.c \
-	src/print_time_and_state.c 
+	src/print_time_and_state.c \
+	src/destroy_mutex.c
 
 OBJ = $(SRC:.c=.o)
 
