@@ -19,11 +19,6 @@ long	check_philo_dead_during_task(t_philo *philo, long *start, long start_routin
 	struct timeval time;
 
 	tmp = get_time(time, *start);
-	//check bool death ?
-	//pas besoin d'unlock les fourchettes car deja unlock quand il mange
-//	printf("start = %ld\n", *start);
-//	timer = get_time(time, *start);
-//	printf("timer = %ld\n", timer);
 	if (state == EATING)
 		timer = tmp + philo->tbl->time_to_eat;
 	if (state == SLEEPING)
@@ -52,14 +47,14 @@ static int print_task(t_philo *philo, long *start, long start_routine, e_status 
 {
 	if (state == EATING)
 	{
-		if (print_time_and_state(philo, start, start_routine, ORANGE"is eating"RESET) == -1)
+		if (prt_time(philo, start, start_routine, "is eating") == -1)
 			return (-1);
 		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)
 			return (-1);
 	}
 	else if (state == SLEEPING)
 	{
-		if (print_time_and_state(philo, start, start_routine, PINK"is sleeping"RESET) == -1)
+		if (prt_time(philo, start, start_routine, "is sleeping") == -1)
 			return (-1);
 	
 		if (check_philo_dead_during_task(philo, start, start_routine, EATING) == true)

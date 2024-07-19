@@ -76,7 +76,7 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine,
 			return (0);
 		if (is_sleeping(philo, start, start_routine, time) == -1)
 			return (-1);
-		if (print_time_and_state(philo, start, start_routine, "is thinking") == -1)
+		if (prt_time(philo, start, start_routine, "is thinking") == -1)
 			return (-1);
 		usleep(10);
 	}

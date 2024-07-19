@@ -12,10 +12,12 @@
 
 #include "philo.h"
 
-static int take_right_fork(t_philo *philo, long *start, long start_routine, struct timeval time);
-static void put_back_forks(t_philo *philo);
+static int	take_right_fork(t_philo *philo, long *start,
+				long start_routine, struct timeval time);
+static void	put_back_forks(t_philo *philo);
 
-int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval time)
+int	is_eating(t_philo *philo, long *start, long start_routine,
+		struct timeval time)
 {
 	while (1)
 	{
@@ -24,11 +26,12 @@ int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval ti
 		if (take_right_fork(philo, start, start_routine, time) == -1)
 			return (-1);
 		pthread_mutex_lock(&philo->left_fork->mutex);
-		if (philo->fork_taken == true && philo->left_fork->is_available == true) 
+		if (philo->fork_taken == true
+			&& philo->left_fork->is_available == true)
 		{
 			philo->left_fork->is_available = false;
 			pthread_mutex_unlock(&philo->left_fork->mutex);
-			if (print_time_and_state(philo, start, start_routine, GREEN"has taken a fork"RESET) == -1)
+			if (prt_time(philo, start, start_routine, "has taken a fork") == -1)
 				return (-1);
 			if (wait_for_task(philo, start, start_routine, EATING) == -1)
 				return (-1);
@@ -41,14 +44,15 @@ int	is_eating(t_philo *philo, long *start, long start_routine, struct timeval ti
 	return (0);
 }
 
-static int take_right_fork(t_philo *philo, long *start, long start_routine, struct timeval time)
+static int	take_right_fork(t_philo *philo, long *start, long start_routine,
+			struct timeval time)
 {
 	pthread_mutex_lock(&philo->right_fork->mutex);
 	if (philo->right_fork->is_available == true)
 	{
 		philo->right_fork->is_available = false;
 		philo->fork_taken = true;
-		if (print_time_and_state(philo, start, start_routine, BLUE"has taken a fork"RESET) == -1)
+		if (prt_time(philo, start, start_routine, "has taken a fork") == -1)
 		{
 			pthread_mutex_unlock(&philo->right_fork->mutex);
 			return (-1);
@@ -58,7 +62,7 @@ static int take_right_fork(t_philo *philo, long *start, long start_routine, stru
 	return (0);
 }
 
-static void put_back_forks(t_philo *philo)
+static void	put_back_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->left_fork->mutex);
 	philo->left_fork->is_available = true;
@@ -69,7 +73,8 @@ static void put_back_forks(t_philo *philo)
 	philo->fork_taken = false;
 }
 
-int	is_sleeping(t_philo *philo, long *start, long start_routine, struct timeval time)
+int	is_sleeping(t_philo *philo, long *start, long start_routine,
+		struct timeval time)
 {
 	if (wait_for_task(philo, start, start_routine, SLEEPING) == -1)
 		return (-1);
