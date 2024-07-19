@@ -31,7 +31,12 @@ void	*routine(void *arg)
 	start = start_routine;
 	philo->start = 1;
 	if (begin_routine(philo, &start, start_routine, time) == -1)
+	{
+		pthread_mutex_lock(&philo->tbl->death_mutex);
+		philo->tbl->death = true;
+		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (NULL);
+	}
 	return (NULL);
 }
 
