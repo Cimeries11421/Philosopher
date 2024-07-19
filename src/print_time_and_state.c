@@ -32,7 +32,7 @@ int	print_death(t_philo *philo, long start_routine, char *str)
 
 }
 
-int	print_time_and_state(t_philo *philo, long *start, long start_routine, char *str)
+int	prt_time(t_philo *philo, long *start, long start_routine, char *str)
 {
 	long	print_time;
 	struct	timeval time;
