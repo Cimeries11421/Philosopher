@@ -12,7 +12,8 @@
 
 #include "philo.h"
 
-bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, struct timeval time)
+bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine,
+				struct timeval time)
 {
 	long	total_time;
 	long	print_time;
@@ -21,14 +22,14 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine, stru
 	total_time = get_time(time, *start);
 	print_time = get_time(time, start_routine);
 	if (philo->tbl->death == true)
-	{	
+	{
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);
 	}
 	if (total_time >= philo->tbl->time_to_die)
 	{
 		if (print_death(philo, start_routine, RED"died"RESET) == -1)
-			return (false); //secu ? 
+			return (false);
 		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (false);

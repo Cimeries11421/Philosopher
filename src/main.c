@@ -14,12 +14,11 @@
 
 int	main(int ac, char **av)
 {
-	t_tbl tbl;
+	t_tbl	tbl;
 
 	tbl = (t_tbl){0};
 	if (parse_input_and_store_in_struct(ac, av, &tbl) == -1)
 		return (-1);
-	printf("nbr_philo = %ld\n", tbl.nbr_philo);
 	if (create_philosophers_and_launch_their_routine(&tbl) == -1)
 		return (-1);
 	return (0);

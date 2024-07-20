@@ -14,10 +14,9 @@
 
 int	print_death(t_philo *philo, long start_routine, char *str)
 {
-	long	print_time;
-	struct	timeval time;
-	long	total_time;
-
+	long			print_time;
+	struct timeval	time;
+	long			total_time;
 
 	print_time = get_time(time, start_routine);
 	if (philo->tbl->death == true)
@@ -29,14 +28,13 @@ int	print_death(t_philo *philo, long start_routine, char *str)
 	if (printf("%ld %ld %s\n", print_time, philo->name, str) == -1)
 		return (-1);
 	return (0);
-
 }
 
 int	prt_time(t_philo *philo, long *start, long start_routine, char *str)
 {
-	long	print_time;
-	struct	timeval time;
-	long	total_time;
+	long			print_time;
+	struct timeval	time;
+	long			total_time;
 
 	pthread_mutex_lock(&philo->tbl->print_mutex);
 	print_time = get_time(time, start_routine);

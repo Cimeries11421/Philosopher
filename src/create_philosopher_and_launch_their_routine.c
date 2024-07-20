@@ -18,6 +18,8 @@ static int		launch_routine_of_all_philosophers(t_philo *tab_philo,
 static void		init_philos_and_give_fork(t_philo *tab_philo,
 					t_tbl *tbl, size_t *i);
 
+static int	stop_threads(t_philo *tab_philo, t_tbl *tbl, size_t *i);
+
 int	create_philosophers_and_launch_their_routine(t_tbl *tbl)
 {
 	size_t	i;
@@ -29,7 +31,9 @@ int	create_philosophers_and_launch_their_routine(t_tbl *tbl)
 		return (-1);
 	if (launch_routine_of_all_philosophers(tab_philo, tbl) == -2)
 	{
+		free(tab_philo);
 		destroy_mutex(tbl);
+		free(tbl->forks);
 		return (-1);
 	}
 	i = 0;
@@ -38,14 +42,15 @@ int	create_philosophers_and_launch_their_routine(t_tbl *tbl)
 		pthread_join(tab_philo[i].t, NULL);
 		i++;
 	}
+	free(tab_philo);
 	destroy_mutex(tbl);
+	free(tbl->forks);
 	return (0);
 }
 
 static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 {
 	size_t	i;
-
 	t_philo	*tab_philo;
 
 	tbl->forks = malloc(tbl->nbr_philo * sizeof(t_forks));
@@ -55,7 +60,7 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 	while (i < tbl->nbr_philo)
 	{
 		if (pthread_mutex_init(&tbl->forks[i].mutex, NULL) == -1)
-			return (-1);
+			return (NULL);
 		tbl->forks[i].is_available = true;
 		i++;
 	}
@@ -74,20 +79,13 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 	struct timeval	time;
 
 	i = 0;
-	pthread_mutex_lock(&tbl->death_mutex);
+	pthread_mutex_lock(&tbl->death_mutex);	
 	while (i < tbl->nbr_philo)
 	{
 		init_philos_and_give_fork(tab_philo, tbl, &i);
 		if (pthread_create(&tab_philo[i].t, NULL, &routine, &tab_philo[i]) != 0)
 		{
-			tbl->death = true;
-			pthread_mutex_unlock(&tbl->death_mutex);
-			while (i > 0)
-			{
-				i--;
-				pthread_join(tab_philo[i].t, NULL);
-			}
-			return (-2);
+			return (stop_threads(tab_philo, tbl, &i));
 		}
 		i++;
 	}
@@ -100,6 +98,18 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 	tbl->start_routine = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	pthread_mutex_unlock(&tbl->death_mutex);
 	return (0);
+}
+
+static int	stop_threads(t_philo *tab_philo, t_tbl *tbl, size_t *i)
+{
+	tbl->death = true;
+	pthread_mutex_unlock(&tbl->death_mutex);
+	while (*i > 0)
+	{
+		(*i)--;
+		pthread_join(tab_philo[*i].t, NULL);
+	}
+	return (-2);
 }
 
 static void	init_philos_and_give_fork(t_philo *tab_philo, t_tbl *tbl, size_t *i)
