@@ -24,12 +24,12 @@ void	*routine(void *arg)
 	int				i;
 
 	i = 0;
+//	time = {0};
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	pthread_mutex_unlock(&philo->tbl->death_mutex);
 	start_routine = philo->tbl->start_routine;
 	start = start_routine;
-	philo->start = 1;
 	if (begin_routine(philo, &start, start_routine, time) == -1)
 	{
 		pthread_mutex_lock(&philo->tbl->death_mutex);

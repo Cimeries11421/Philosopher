@@ -18,7 +18,7 @@ static int		launch_routine_of_all_philosophers(t_philo *tab_philo,
 static void		init_philos_and_give_fork(t_philo *tab_philo,
 					t_tbl *tbl, size_t *i);
 
-static int	stop_threads(t_philo *tab_philo, t_tbl *tbl, size_t *i);
+static int		stop_threads(t_philo *tab_philo, t_tbl *tbl, size_t *i);
 
 int	create_philosophers_and_launch_their_routine(t_tbl *tbl)
 {
@@ -79,7 +79,7 @@ static int	launch_routine_of_all_philosophers(t_philo *tab_philo, t_tbl *tbl)
 	struct timeval	time;
 
 	i = 0;
-	pthread_mutex_lock(&tbl->death_mutex);	
+	pthread_mutex_lock(&tbl->death_mutex);
 	while (i < tbl->nbr_philo)
 	{
 		init_philos_and_give_fork(tab_philo, tbl, &i);
@@ -116,9 +116,8 @@ static void	init_philos_and_give_fork(t_philo *tab_philo, t_tbl *tbl, size_t *i)
 {
 	tab_philo[*i] = (t_philo){0};
 	tab_philo[*i].tbl = tbl;
-	tab_philo[*i].name = *i;
+	tab_philo[*i].name = (*i) + 1;
 	tab_philo[*i].fork_taken = false;
-	tab_philo[*i].start = false;
 	if (*i == tbl->nbr_philo - 1)
 	{
 		tab_philo[*i].right_fork = &tbl->forks[*i];

@@ -28,7 +28,7 @@ bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine,
 	}
 	if (total_time >= philo->tbl->time_to_die)
 	{
-		if (print_death(philo, start_routine, RED"died"RESET) == -1)
+		if (print_death(philo, start_routine, "died") == -1)
 			return (false);
 		philo->tbl->death = true;
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
