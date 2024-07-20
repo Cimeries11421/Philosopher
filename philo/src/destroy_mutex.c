@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time.c                                         :+:      :+:    :+:   */
+/*   destroy_mutex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebriere <ebriere@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/28 01:42:39 by ebriere           #+#    #+#             */
-/*   Updated: 2024/06/28 01:42:44 by ebriere          ###   ########.fr       */
+/*   Created: 2024/07/19 01:37:52 by ebriere           #+#    #+#             */
+/*   Updated: 2024/07/19 01:37:55 by ebriere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(long start)
+int	destroy_mutex(t_tbl *tbl)
 {
-	long			print_time;
-	long			tmp;
-	struct timeval	time;
+	size_t	i;
 
-	if (gettimeofday(&time, NULL) == -1)
-		return (-1);
-	tmp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	print_time = tmp - start;
-	return (print_time);
+	i = 0;
+	while (i < tbl->nbr_philo)
+	{
+		pthread_mutex_destroy(&tbl->forks[i].mutex);
+		i++;
+	}
+	return (0);
 }

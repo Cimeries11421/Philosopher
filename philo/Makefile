@@ -1,6 +1,6 @@
 NAME = philo
-CFLAGS = -Wall -Wextra  #-Werror
-INCFLAGS= -I libft/src -I include #-I./ # -I : include 
+CFLAGS = -Wall -Wextra -Werror
+INCFLAGS= -I include #-I./ # -I : include 
 CC = cc
 SRC = \
 	src/main.c \
@@ -12,37 +12,31 @@ SRC = \
 	src/check_philo_all_alive.c \
 	src/get_time.c \
 	src/print_time_and_state.c \
-	src/destroy_mutex.c
+	src/destroy_mutex.c \
+	src/ft_strtol.c \
+	src/ft_isdigit.c
 
 OBJ = $(SRC:.c=.o)
 
-LIBFT= libft/libft.a
+HEADERS = include/philo.h
 
-HEADERS= include #/minishell.h libft/src/libft.h
-
-all : lib
+all :
 	$(MAKE) $(NAME)
 
-$(NAME) : $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCFLAGS) $(OBJ) $(LIBFT) -o $(NAME) 
+$(NAME) : $(OBJ)
+	$(CC) $(CFLAGS) $(INCFLAGS) $(OBJ) -o $(NAME) 
 
 %.o : %.c $(HEADERS) 	
 	$(CC) $(CFLAGS) $(INCFLAGS) -o $@ -c $<
-
-lib :
-	$(MAKE) -C libft/
 
 re: fclean
 	$(MAKE) all
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) fclean -C libft/
 
 clean :
 	rm -rf $(OBJ)
-	$(MAKE) clean -C libft/
-
 
 sanitize:
 	make CFLAGS="-Wall -Wextra -g3 -fsanitize=thread"

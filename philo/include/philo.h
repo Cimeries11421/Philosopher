@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
-# include "libft.h"
 # include <stdbool.h>
 
 typedef enum s_status
@@ -63,6 +62,8 @@ typedef struct s_philo
 	t_status	status;
 }				t_philo;
 
+long	ft_strtol(const char *p);
+int		ft_isdigit(int c);
 int		parse_input_and_store_in_struct(int ac, char **av, t_tbl *tbl);
 int		create_philosophers_and_launch_their_routine(t_tbl *tbl);
 void	*routine(void *arg);
