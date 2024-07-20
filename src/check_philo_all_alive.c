@@ -12,15 +12,14 @@
 
 #include "philo.h"
 
-bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine,
-				struct timeval time)
+bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine)
 {
 	long	total_time;
 	long	print_time;
 
 	pthread_mutex_lock(&philo->tbl->death_mutex);
-	total_time = get_time(time, *start);
-	print_time = get_time(time, start_routine);
+	total_time = get_time(*start);
+	print_time = get_time(start_routine);
 	if (philo->tbl->death == true)
 	{
 		pthread_mutex_unlock(&philo->tbl->death_mutex);

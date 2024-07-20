@@ -12,25 +12,22 @@
 
 #include "philo.h"
 
-static int	begin_routine(t_philo *philo, long *start, long start_routine,
-				struct timeval time);
+static int	begin_routine(t_philo *philo, long *start, long start_routine);
 
 void	*routine(void *arg)
 {
 	t_philo			*philo;
-	struct timeval	time;
 	long			start;
 	long			start_routine;
 	int				i;
 
 	i = 0;
-//	time = {0};
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->tbl->death_mutex);
 	pthread_mutex_unlock(&philo->tbl->death_mutex);
 	start_routine = philo->tbl->start_routine;
 	start = start_routine;
-	if (begin_routine(philo, &start, start_routine, time) == -1)
+	if (begin_routine(philo, &start, start_routine) == -1)
 	{
 		pthread_mutex_lock(&philo->tbl->death_mutex);
 		philo->tbl->death = true;
@@ -58,8 +55,7 @@ static bool	check_meal_eaten(t_philo *philo)
 	return (false);
 }
 
-static int	begin_routine(t_philo *philo, long *start, long start_routine,
-				struct timeval time)
+static int	begin_routine(t_philo *philo, long *start, long start_routine)
 {
 	int	total_time;
 	int	time_to_wait;
@@ -75,11 +71,11 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine,
 	total_time = 0;
 	while (1)
 	{
-		if (is_eating(philo, start, start_routine, time) == -1)
+		if (is_eating(philo, start, start_routine) == -1)
 			return (-1);
 		if (check_meal_eaten(philo) == true)
 			return (0);
-		if (is_sleeping(philo, start, start_routine, time) == -1)
+		if (is_sleeping(philo, start, start_routine) == -1)
 			return (-1);
 		if (prt_time(philo, start, start_routine, "is thinking") == -1)
 			return (-1);

@@ -13,13 +13,13 @@
 #include "philo.h"
 
 static int	print_task(t_philo *philo, long *start, long start_routine,
-				e_status state);
+				t_status state);
 static int	check_philo_dead_during_task(t_philo *philo, long *start,
-				long start_routine, e_status state);
+				long start_routine, t_status state);
 static int	loop_task(long tmp, long total_time, int time_to_wait);
 
 int	wait_for_task(t_philo *philo, long *start, long start_routine,
-		e_status state)
+		t_status state)
 {
 	long			total_time;
 	long			tmp;
@@ -46,7 +46,7 @@ int	wait_for_task(t_philo *philo, long *start, long start_routine,
 }
 
 static int	print_task(t_philo *philo, long *start, long start_routine,
-		e_status state)
+		t_status state)
 {
 	if (state == EATING)
 	{
@@ -70,13 +70,11 @@ static int	print_task(t_philo *philo, long *start, long start_routine,
 static int	out_of_timer(t_philo *philo, long *start, long start_routine,
 		long tmp)
 {
-	struct timeval	time;
-
 	while (1)
 	{
 		if (tmp >= philo->tbl->time_to_die)
 			break ;
-		tmp = get_time(time, *start);
+		tmp = get_time(*start);
 	}
 	pthread_mutex_lock(&philo->tbl->print_mutex);
 	pthread_mutex_lock(&philo->tbl->death_mutex);
@@ -89,14 +87,13 @@ static int	out_of_timer(t_philo *philo, long *start, long start_routine,
 }
 
 static int	check_philo_dead_during_task(t_philo *philo, long *start,
-			long start_routine, e_status state)
+			long start_routine, t_status state)
 {
 	long			timer;
 	long			tmp;
-	struct timeval	time;
 
 	timer = 0;
-	tmp = get_time(time, *start);
+	tmp = get_time(*start);
 	if (state == EATING)
 		timer = tmp + philo->tbl->time_to_eat;
 	else if (state == SLEEPING)
@@ -112,12 +109,10 @@ static int	check_philo_dead_during_task(t_philo *philo, long *start,
 
 static int	loop_task(long tmp, long total_time, int time_to_wait)
 {
-	struct timeval	time;
-
 	while (1)
 	{
 		usleep(100);
-		total_time = get_time(time, tmp);
+		total_time = get_time(tmp);
 		if (total_time >= time_to_wait)
 			break ;
 	}
