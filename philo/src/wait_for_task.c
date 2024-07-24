@@ -61,7 +61,7 @@ static int	print_task(t_philo *philo, long *start, long start_routine,
 		if (prt_time(philo, start, start_routine, "is sleeping") == -1)
 			return (-1);
 		if (check_philo_dead_during_task(philo, start,
-				start_routine, EATING) == -1)
+				start_routine, SLEEPING) == -1)
 			return (-1);
 	}
 	return (0);
