@@ -73,12 +73,12 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine)
 	{
 		if (is_eating(philo, start, start_routine) == -1)
 			return (-1);
-		if (check_meal_eaten(philo) == true)
-			return (0);
 		if (is_sleeping(philo, start, start_routine) == -1)
 			return (-1);
 		if (prt_time(philo, start, start_routine, "is thinking") == -1)
 			return (-1);
+		if (check_meal_eaten(philo) == true)
+			return (0);
 		usleep(10);
 	}
 	return (0);
