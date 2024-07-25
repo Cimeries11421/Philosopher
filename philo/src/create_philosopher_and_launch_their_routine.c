@@ -65,6 +65,7 @@ static t_philo	*create_table_of_philosophers_and_add_forks(t_tbl *tbl)
 		i++;
 	}
 	pthread_mutex_init(&tbl->death_mutex, NULL);
+	pthread_mutex_init(&tbl->test_mutex, NULL);
 	pthread_mutex_init(&tbl->print_mutex, NULL);
 	pthread_mutex_init(&tbl->meal_mutex, NULL);
 	tab_philo = malloc(tbl->nbr_philo * sizeof(t_philo));
@@ -118,14 +119,14 @@ static void	init_philos_and_give_fork(t_philo *tab_philo, t_tbl *tbl, size_t *i)
 	tab_philo[*i].tbl = tbl;
 	tab_philo[*i].name = (*i) + 1;
 	tab_philo[*i].fork_taken = false;
-	if (*i == tbl->nbr_philo - 1)
+	if (*i % 2 == 0)
 	{
-		tab_philo[*i].right_fork = &tbl->forks[*i];
-		tab_philo[*i].left_fork = &tbl->forks[0];
+		tab_philo[*i].right_fork = &tbl->forks[(*i + 1) % tbl->nbr_philo];
+		tab_philo[*i].left_fork = &tbl->forks[*i];
 	}
 	else
 	{
+		tab_philo[*i].left_fork = &tbl->forks[(*i + 1) % tbl->nbr_philo];
 		tab_philo[*i].right_fork = &tbl->forks[*i];
-		tab_philo[*i].left_fork = &tbl->forks[(*i) + 1];
 	}
 }

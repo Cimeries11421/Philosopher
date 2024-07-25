@@ -23,8 +23,10 @@ int	print_death(t_philo *philo, long start_routine, char *str)
 		pthread_mutex_unlock(&philo->tbl->death_mutex);
 		return (-1);
 	}
+	pthread_mutex_lock(&philo->tbl->test_mutex);
 	if (printf("%ld %ld %s\n", print_time, philo->name, str) == -1)
 		return (-1);
+	pthread_mutex_unlock(&philo->tbl->test_mutex);
 	return (0);
 }
 
@@ -39,8 +41,10 @@ int	prt_time(t_philo *philo, long *start, long start_routine, char *str)
 		pthread_mutex_unlock(&philo->tbl->print_mutex);
 		return (-1);
 	}
+	pthread_mutex_lock(&philo->tbl->test_mutex);
 	if (printf("%ld %ld %s\n", print_time, philo->name, str) == -1)
 		return (-1);
+	pthread_mutex_unlock(&philo->tbl->test_mutex);
 	pthread_mutex_unlock(&philo->tbl->print_mutex);
 	return (0);
 }

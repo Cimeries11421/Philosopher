@@ -45,6 +45,7 @@ typedef struct s_tbl
 	pthread_mutex_t	meal_mutex;
 	long			start_routine;
 	bool			death;
+	pthread_mutex_t	test_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	t_forks			*forks;
