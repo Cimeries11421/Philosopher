@@ -37,24 +37,6 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-static bool	check_meal_eaten(t_philo *philo)
-{
-	if (philo->nbr_meal == philo->tbl->nbr_of_times_need_to_eat)
-	{
-		pthread_mutex_lock(&philo->tbl->meal_mutex);
-		philo->tbl->nbr_philo_full++;
-		pthread_mutex_unlock(&philo->tbl->meal_mutex);
-	}
-	pthread_mutex_lock(&philo->tbl->meal_mutex);
-	if (philo->tbl->nbr_philo_full >= philo->tbl->nbr_philo)
-	{
-		pthread_mutex_unlock(&philo->tbl->meal_mutex);
-		return (true);
-	}
-	pthread_mutex_unlock(&philo->tbl->meal_mutex);
-	return (false);
-}
-
 static int	begin_routine(t_philo *philo, long *start, long start_routine)
 {
 	int	total_time;
@@ -77,8 +59,6 @@ static int	begin_routine(t_philo *philo, long *start, long start_routine)
 			return (-1);
 		if (prt_time(philo, start, start_routine, "is thinking") == -1)
 			return (-1);
-		if (check_meal_eaten(philo) == true)
-			return (0);
 		usleep(10);
 	}
 	return (0);

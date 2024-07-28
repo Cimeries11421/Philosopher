@@ -56,6 +56,7 @@ typedef struct s_philo
 	pthread_t	t;
 	size_t		name;
 	bool		fork_taken;
+	bool		full;
 	int			nbr_meal;
 	t_forks		*right_fork;
 	t_forks		*left_fork;
@@ -73,7 +74,8 @@ int		is_eating(t_philo *philo, long *start, long start_routine);
 int		is_sleeping(t_philo *philo, long *start, long start_routine);
 int		wait_for_task(t_philo *philo, long *start, long start_routine,
 			t_status state);
-bool	check_philo_all_alive(t_philo *philo, long *start, long start_routine);
+bool	check_philo_alive_or_full(t_philo *philo, long *start,
+			long start_routine);
 int		prt_time(t_philo *philo, long *start, long start_routine, char *str);
 int		print_death(t_philo *philo, long start_routine, char *str);
 int		destroy_mutex(t_tbl *tbl);

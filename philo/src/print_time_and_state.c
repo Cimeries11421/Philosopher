@@ -36,7 +36,7 @@ int	prt_time(t_philo *philo, long *start, long start_routine, char *str)
 
 	pthread_mutex_lock(&philo->tbl->print_mutex);
 	print_time = get_time(start_routine);
-	if (check_philo_all_alive(philo, start, start_routine) == false)
+	if (check_philo_alive_or_full(philo, start, start_routine) == false)
 	{
 		pthread_mutex_unlock(&philo->tbl->print_mutex);
 		return (-1);

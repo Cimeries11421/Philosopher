@@ -19,7 +19,7 @@ int	is_eating(t_philo *philo, long *start, long start_routine)
 {
 	while (1)
 	{
-		if (check_philo_all_alive(philo, start, start_routine) == false)
+		if (check_philo_alive_or_full(philo, start, start_routine) == false)
 			return (-1);
 		if (take_right_fork(philo, start, start_routine) == -1)
 			return (-1);

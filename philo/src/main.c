@@ -19,6 +19,8 @@ int	main(int ac, char **av)
 	tbl = (t_tbl){0};
 	if (parse_input_and_store_in_struct(ac, av, &tbl) == -1)
 		return (-1);
+	if (av[5] == NULL)
+		tbl.nbr_of_times_need_to_eat = -1;
 	if (create_philosophers_and_launch_their_routine(&tbl) == -1)
 		return (-1);
 	return (0);
